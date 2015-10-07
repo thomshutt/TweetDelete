@@ -20,11 +20,12 @@ api = tweepy.API(auth)
 while 1:
   try:
     my_tweets = api.user_timeline()
-    now = datetime.now()
+    now = datetime.utcnow()
     for tweet in my_tweets:
       if (now - tweet.created_at) > timedelta(minutes=mins_before_killing):
         print "Deleting: " + tweet.text.encode('utf-8')
         api.destroy_status(tweet.id)
-  except:
+  except Exception, e:
     print "Error while trying to delete..."
+    print e
   time.sleep(60 * 4)
